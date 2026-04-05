@@ -130,13 +130,13 @@ All tests must pass. Current count: 389 tests.
 
 ```bash
 # stdio (for MCP client testing)
-mcp-test-server
+mcp-testkit
 
 # SSE + REST API
-mcp-test-server --transport sse
+mcp-testkit --transport sse
 
 # With auth
-mcp-test-server --transport sse --auth <key>
+mcp-testkit --transport sse --auth <key>
 ```
 
 Default SSE port is 3001. Override with `--port`.

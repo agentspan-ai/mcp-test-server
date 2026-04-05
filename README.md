@@ -20,31 +20,31 @@ pip install -e .
 
 ```bash
 # stdio (default)
-mcp-test-server
+mcp-testkit
 
 # SSE + REST API on port 3001
-mcp-test-server --transport sse
+mcp-testkit --transport sse
 
 # With bearer token authentication
-mcp-test-server --transport sse --auth super_secret_key
+mcp-testkit --transport sse --auth super_secret_key
 
 # Custom host/port
-mcp-test-server --transport sse --host 0.0.0.0 --port 8080
+mcp-testkit --transport sse --host 0.0.0.0 --port 8080
 ```
 
 ## Transports
 
 | Transport | Command | Endpoints |
 |-----------|---------|-----------|
-| **stdio** | `python3 server.py` | MCP JSON-RPC over stdin/stdout |
-| **SSE** | `python3 server.py --transport sse` | MCP at `/sse` + REST at `/api/*` + OpenAPI at `/api-docs` |
+| **stdio** | `mcp-testkit` | MCP JSON-RPC over stdin/stdout |
+| **SSE** | `mcp-testkit --transport sse` | MCP at `/sse` + REST at `/api/*` + OpenAPI at `/api-docs` |
 
 ## Authentication
 
 Pass `--auth <key>` to require a Bearer token on all requests (both MCP SSE and REST):
 
 ```bash
-python3 server.py --transport sse --auth my_secret
+mcp-testkit --transport sse --auth my_secret
 
 # Clients must include:
 # Authorization: Bearer my_secret

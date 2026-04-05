@@ -42,7 +42,7 @@ def _wait_for_server(url, timeout=15):
 
 
 def _start_server(port, auth_key=None):
-    """Start mcp-test-server as a subprocess."""
+    """Start mcp-testkit as a subprocess."""
     cmd = [sys.executable, "-m", "mcp_test_server.server", "--transport", "sse", "--port", str(port)]
     if auth_key:
         cmd += ["--auth", auth_key]

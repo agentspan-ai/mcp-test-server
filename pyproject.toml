@@ -32,7 +32,7 @@ dependencies = [
 Repository = "https://github.com/agentspan-dev/mcp-test-server"
 
 [project.scripts]
-mcp-test-server = "mcp_test_server.server:main"
+mcp-testkit = "mcp_test_server.server:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["mcp_test_server"]

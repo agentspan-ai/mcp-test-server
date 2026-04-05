@@ -49,7 +49,7 @@ jobs:
       - name: Verify wheel
         run: |
           pip install dist/*.whl
-          mcp-test-server --help
+          mcp-testkit --help
           python -c "from mcp_test_server import __version__; print(f'Version: {__version__}')"
 
       - name: Publish to PyPI
