@@ -75,3 +75,15 @@ def register(mcp):
             "list_param": list_param,
             "obj_param": obj_param,
         })
+
+    @mcp.tool()
+    def get_weather(city: str) -> str:
+        """Get weather for a city. Always returns fixed deterministic data (77°F, sunny)."""
+        return json.dumps({
+            "city": city,
+            "temperature_f": 77,
+            "temperature_c": 25,
+            "condition": "sunny",
+            "humidity_pct": 45,
+            "wind_mph": 5,
+        })

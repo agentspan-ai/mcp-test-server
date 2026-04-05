@@ -26,10 +26,10 @@ class TestIntegration(unittest.TestCase):
     def setUp(self):
         self.mcp = _make_server()
 
-    def test_all_64_tools_registered(self):
-        """Verify exactly 64 tools are registered."""
+    def test_all_65_tools_registered(self):
+        """Verify exactly 65 tools are registered."""
         tools = asyncio.run(self.mcp.list_tools())
-        self.assertEqual(len(tools), 64, f"Expected 64 tools, got {len(tools)}: {[t.name for t in tools]}")
+        self.assertEqual(len(tools), 65, f"Expected 65 tools, got {len(tools)}: {[t.name for t in tools]}")
 
     def test_tool_groups_have_8_each(self):
         """Verify each group prefix has exactly 8 tools."""
@@ -39,9 +39,11 @@ class TestIntegration(unittest.TestCase):
         for prefix in prefixes:
             group = [n for n in names if n.startswith(prefix)]
             self.assertEqual(len(group), 8, f"Group '{prefix}' has {len(group)} tools: {group}")
-        # echo group: "echo" plus 7 "echo_*" tools
+        # echo group: "echo" plus 7 "echo_*" tools + get_weather
         echo_group = [n for n in names if n == "echo" or n.startswith("echo_")]
         self.assertEqual(len(echo_group), 8, f"Group 'echo' has {len(echo_group)} tools: {echo_group}")
+        # get_weather is a standalone test fixture tool
+        self.assertIn("get_weather", names)
 
     def test_all_tools_have_descriptions(self):
         """Verify every tool has a description."""
@@ -60,6 +62,7 @@ class TestIntegration(unittest.TestCase):
             ("conversion_celsius_to_fahrenheit", {"value": 100}),
             ("echo", {"message": "test"}),
             ("collection_sort", {"items": [3, 1, 2]}),
+            ("get_weather", {"city": "San Francisco"}),
         ]
         for name, args in test_cases:
             r1 = asyncio.run(self.mcp.call_tool(name, args))
