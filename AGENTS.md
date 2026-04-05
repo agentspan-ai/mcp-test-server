@@ -4,7 +4,7 @@ Instructions for AI agents contributing to this project.
 
 ## Project Overview
 
-This is an MCP test server with 65 deterministic tools across 8 groups, exposed via MCP (stdio/SSE) and REST API. Every tool returns identical output for identical input — no randomness, no `datetime.now()`, no external state.
+This is an MCP test server with 65 deterministic tools across 8 groups, exposed via MCP (stdio/HTTP) and REST API. Every tool returns identical output for identical input — no randomness, no `datetime.now()`, no external state.
 
 ## Architecture
 
@@ -132,14 +132,14 @@ All tests must pass. Current count: 389 tests.
 # stdio (for MCP client testing)
 mcp-testkit
 
-# SSE + REST API
-mcp-testkit --transport sse
+# HTTP + REST API
+mcp-testkit --transport http
 
 # With auth
-mcp-testkit --transport sse --auth <key>
+mcp-testkit --transport http --auth <key>
 ```
 
-Default SSE port is 3001. Override with `--port`.
+Default HTTP port is 3001. Override with `--port`.
 
 ## Dependencies
 

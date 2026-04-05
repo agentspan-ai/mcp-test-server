@@ -1,6 +1,6 @@
 # MCP Test Server
 
-A Python MCP server with **65 deterministic tools** across 8 groups, supporting **stdio**, **SSE**, and **REST API** transports. Built for consistent, repeatable MCP protocol testing.
+A Python MCP server with **65 deterministic tools** across 8 groups, supporting **stdio**, **HTTP**, and **REST API** transports. Built for consistent, repeatable MCP protocol testing.
 
 ## Install
 
@@ -23,13 +23,13 @@ pip install -e .
 mcp-testkit
 
 # SSE + REST API on port 3001
-mcp-testkit --transport sse
+mcp-testkit --transport http
 
 # With bearer token authentication
-mcp-testkit --transport sse --auth super_secret_key
+mcp-testkit --transport http --auth super_secret_key
 
 # Custom host/port
-mcp-testkit --transport sse --host 0.0.0.0 --port 8080
+mcp-testkit --transport http --host 0.0.0.0 --port 8080
 ```
 
 ## Transports
@@ -37,14 +37,14 @@ mcp-testkit --transport sse --host 0.0.0.0 --port 8080
 | Transport | Command | Endpoints |
 |-----------|---------|-----------|
 | **stdio** | `mcp-testkit` | MCP JSON-RPC over stdin/stdout |
-| **SSE** | `mcp-testkit --transport sse` | MCP at `/mcp` + REST at `/api/*` + OpenAPI at `/api-docs` |
+| **HTTP** | `mcp-testkit --transport http` | MCP at `/mcp` + REST at `/api/*` + OpenAPI at `/api-docs` |
 
 ## Authentication
 
 Pass `--auth <key>` to require a Bearer token on all requests (both MCP SSE and REST):
 
 ```bash
-mcp-testkit --transport sse --auth my_secret
+mcp-testkit --transport http --auth my_secret
 
 # Clients must include:
 # Authorization: Bearer my_secret
@@ -170,7 +170,7 @@ All return `{valid: bool, reason: string}`.
 
 ## REST API
 
-When running with `--transport sse`, all tools are also available as HTTP endpoints:
+When running with `--transport http`, all tools are also available as HTTP endpoints:
 
 ```bash
 # GET endpoints (math, conversion, some echo, weather)

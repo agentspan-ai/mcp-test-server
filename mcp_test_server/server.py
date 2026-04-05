@@ -15,7 +15,6 @@ from mcp_test_server.tools import register_all
 mcp = FastMCP(
     name="mcp-testkit",
     instructions="A test server with 65 deterministic tools across 8 groups for MCP protocol testing.",
-    sse_path="/mcp",
 )
 
 register_all(mcp)
@@ -35,9 +34,9 @@ class BearerAuthMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 
-def _build_sse_app(auth_key=None):
-    """Build SSE Starlette app with REST API routes and optional auth."""
-    app = mcp.sse_app()
+def _build_http_app(auth_key=None):
+    """Build Streamable HTTP Starlette app with REST API routes and optional auth."""
+    app = mcp.streamable_http_app()
 
     # Add REST API routes
     api_routes = create_api_routes(mcp)
@@ -54,20 +53,20 @@ def main():
     parser = argparse.ArgumentParser(description="MCP Test Server")
     parser.add_argument(
         "--transport",
-        choices=["stdio", "sse"],
+        choices=["stdio", "http"],
         default="stdio",
         help="Transport protocol (default: stdio)",
     )
-    parser.add_argument("--host", default="127.0.0.1", help="SSE host (default: 127.0.0.1)")
-    parser.add_argument("--port", type=int, default=3001, help="SSE port (default: 3001)")
-    parser.add_argument("--auth", default=None, help="Bearer auth key (enables authentication for SSE)")
+    parser.add_argument("--host", default="127.0.0.1", help="HTTP host (default: 127.0.0.1)")
+    parser.add_argument("--port", type=int, default=3001, help="HTTP port (default: 3001)")
+    parser.add_argument("--auth", default=None, help="Bearer auth key (enables authentication for HTTP)")
     args = parser.parse_args()
 
-    if args.transport == "sse":
+    if args.transport == "http":
         mcp.settings.host = args.host
         mcp.settings.port = args.port
 
-        app = _build_sse_app(auth_key=args.auth)
+        app = _build_http_app(auth_key=args.auth)
         config = uvicorn.Config(
             app,
             host=args.host,
