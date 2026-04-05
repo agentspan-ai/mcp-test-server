@@ -15,6 +15,7 @@ from mcp_test_server.tools import register_all
 mcp = FastMCP(
     name="mcp-testkit",
     instructions="A test server with 65 deterministic tools across 8 groups for MCP protocol testing.",
+    stateless_http=True,
 )
 
 register_all(mcp)
