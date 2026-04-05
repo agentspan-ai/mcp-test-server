@@ -1,14 +1,15 @@
 """MCP Test Server — 65 deterministic tools for MCP protocol testing."""
 
 import argparse
+import asyncio
 
 import uvicorn
 from mcp.server.fastmcp import FastMCP
-from starlette.middleware import Middleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
+from api import create_api_routes
 from tools import register_all
 
 mcp = FastMCP(
@@ -33,6 +34,21 @@ class BearerAuthMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 
+def _build_sse_app(auth_key=None):
+    """Build SSE Starlette app with REST API routes and optional auth."""
+    app = mcp.sse_app()
+
+    # Add REST API routes
+    api_routes = create_api_routes(mcp)
+    for route in api_routes:
+        app.routes.append(route)
+
+    if auth_key:
+        app.add_middleware(BearerAuthMiddleware, auth_key=auth_key)
+
+    return app
+
+
 def main():
     parser = argparse.ArgumentParser(description="MCP Test Server")
     parser.add_argument(
@@ -50,21 +66,15 @@ def main():
         mcp.settings.host = args.host
         mcp.settings.port = args.port
 
-        if args.auth:
-            # Build the SSE Starlette app and wrap with auth middleware
-            app = mcp.sse_app()
-            app.add_middleware(BearerAuthMiddleware, auth_key=args.auth)
-            config = uvicorn.Config(
-                app,
-                host=args.host,
-                port=args.port,
-                log_level="info",
-            )
-            server = uvicorn.Server(config)
-            import asyncio
-            asyncio.run(server.serve())
-        else:
-            mcp.run(transport="sse")
+        app = _build_sse_app(auth_key=args.auth)
+        config = uvicorn.Config(
+            app,
+            host=args.host,
+            port=args.port,
+            log_level="info",
+        )
+        server = uvicorn.Server(config)
+        asyncio.run(server.serve())
     else:
         mcp.run(transport="stdio")
 
