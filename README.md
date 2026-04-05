@@ -5,7 +5,7 @@ A Python MCP server with **65 deterministic tools** across 8 groups, supporting 
 ## Install
 
 ```bash
-pip install mcp-test-server
+pip install mcp-testkit
 ```
 
 Or from source:

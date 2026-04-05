@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "mcp-test-server"
+name = "mcp-testkit"
 version = "0.1.0"
 description = "MCP test server with 65 deterministic tools for protocol testing"
 readme = "README.md"
