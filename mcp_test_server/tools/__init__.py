@@ -9,6 +9,7 @@ from mcp_test_server.tools import (
     validation_tools,
     conversion_tools,
     echo_tools,
+    weather_tools,
 )
 
 ALL_GROUPS = [
@@ -20,6 +21,7 @@ ALL_GROUPS = [
     validation_tools,
     conversion_tools,
     echo_tools,
+    weather_tools,
 ]
 
 
